@@ -28,20 +28,17 @@ body {
 
 /* Phone Container - Wrapper for positioning */
 .phone-container {
-    position: relative;
-    display: none;
-    transform: translateY(120%);
     opacity: 0;
-    will-change: transform, opacity;
-    transition:
-        transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-        opacity 0.1s ease-out;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .phone-container.visible {
-    transform: translateY(0);
     opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
+
 
 .phone-container.closing {
     transform: translateY(120%);

@@ -304,6 +304,16 @@ function openPhone() {
     elements.phoneContainer.classList.add('visible');
 }
 
+if (typeof cef !== "undefined") {
+    cef.on("phone_open", () => {
+        const phone = document.getElementById("phoneContainer");
+        if (phone) {
+            phone.classList.add("visible");
+        }
+    });
+}
+
+
 function openPhoneWithCommand() {
     elements.phoneContainer.style.display = 'block';
     document.body.style.background = 'transparent';

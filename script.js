@@ -271,24 +271,18 @@ function handleHomeIndicatorClick() {
 }
 
 function closePhone() {
-    // No CEF: peça para o servidor ocultar (ele manda celularHide de volta)
-    if (typeof Cef !== 'undefined') {
-        const sendCefEvent = (eventName, eventData = '1') => {
-            try {
-                Cef.sendEvent(eventName, eventData);
-            } catch (e) {
-                if (Cef.trigger) Cef.trigger(eventName, eventData);
-                else if (Cef.emit) Cef.emit(eventName, eventData);
-                else if (Cef.call) Cef.call(eventName, eventData);
-            }
-        };
-
-        sendCefEvent('celularClose', '1');
-        console.log('[Celular2] celularClose enviado');
+    // CEF (SA:MP Mobile)
+    if (typeof cef !== 'undefined') {
+        try {
+            cef.emit('phone_close', '');
+            console.log('[Celular] phone_close enviado ao servidor');
+        } catch (e) {
+            console.log('[Celular] Erro ao emitir phone_close:', e);
+        }
         return;
     }
 
-    // Modo navegador: animação normal
+    // Modo navegador (fallback)
     elements.phoneContainer.classList.remove('visible');
     elements.phoneContainer.classList.add('closing');
 
@@ -296,13 +290,13 @@ function closePhone() {
         elements.phoneContainer.classList.remove('closing');
         elements.phoneContainer.style.display = 'none';
         document.body.style.background = 'transparent';
-        // Reset to lock screen for next open
+
         state.isLocked = true;
         elements.lockScreen.classList.remove('hidden');
         elements.homeScreen.classList.add('hidden');
     }, 300);
 
-    console.log('[Celular2] Celular fechado');
+    console.log('[Celular] Celular fechado (modo navegador)');
 }
 
 function openPhone() {
@@ -313,13 +307,18 @@ function openPhone() {
 function openPhoneWithCommand() {
     elements.phoneContainer.style.display = 'block';
     document.body.style.background = 'transparent';
-    
+
+    elements.lockScreen.classList.remove('hidden');
+    elements.homeScreen.classList.add('hidden');
+    state.isLocked = true;
+
     setTimeout(() => {
         elements.phoneContainer.classList.add('visible');
     }, 50);
-    
-    console.log('[Celular2] Celular aberto via comando');
+
+    console.log('[Celular] Celular aberto');
 }
+
 
 function getInitials(name) {
     const parts = name.replace('_', ' ').split(' ');

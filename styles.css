@@ -435,7 +435,6 @@ body {
 .wa-icon-btn svg {
     width: 20px;
     height: 20px;
-}
     flex: 1;
     overflow-y: auto;
     scrollbar-width: none;
